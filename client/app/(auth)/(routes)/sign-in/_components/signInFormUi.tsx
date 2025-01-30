@@ -1,10 +1,14 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import React from "react";
-
+import { redirect } from "next/navigation";
 const SignInFormUi = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    redirect("dashboard");
+  };
   return (
-    <form className="space-y-4 md:space-y-6" action="#">
+    <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
       <div>
         <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
           Your email
