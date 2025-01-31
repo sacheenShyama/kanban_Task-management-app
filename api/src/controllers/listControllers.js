@@ -37,4 +37,33 @@ const getList = async (req, res) => {
   }
 };
 
-module.exports = { createList, getList };
+const updateList = async (req, res) => {
+  try {
+    const { title, listId } = req.body;
+
+    if (!title || !listId) {
+      return res.status(400).json({ message: "title and boardId not found" });
+    }
+
+    const list = await List.findOneAndUpdate(
+      {
+        _id: listId,
+      },
+      {
+        title,
+      },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+    if (!list) {
+      return res.status(404).json({ message: "List not found" });
+    }
+    res.status(200).json({ message: "List updated" });
+  } catch (error) {
+    res.status(500).json({ message: error, Error: "Error updating list" });
+  }
+};
+
+module.exports = { createList, getList, updateList };

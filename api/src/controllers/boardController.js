@@ -32,5 +32,39 @@ const getBoard = async (req, res) => {
   }
 };
 
+const updateBoard = async (req, res) => {
+  try {
+    const { boardId, title } = req.body;
+    const userId = req.user.id;
 
-module.exports = { createBoard, getBoard };
+    if (!boardId || !title) {
+      return res.status(401).json({ message: "board&title id no found" });
+    }
+
+    const board = await Board.findOneAndUpdate(
+      {
+        _id: boardId,
+        userId,
+      },
+      {
+        title,
+      },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+
+    if (!board) {
+      return res
+        .status(404)
+        .json({ message: "Board not found or unauthorized" });
+    }
+
+    res.status(200).json({ message: "Board updated successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error, Error: "Error updating board" });
+  }
+};
+
+module.exports = { createBoard, getBoard, updateBoard };
