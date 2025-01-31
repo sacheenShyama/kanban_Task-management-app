@@ -25,8 +25,7 @@ const createList = async (req, res) => {
 const getList = async (req, res) => {
   try {
     const boardId = req.query.boardId;
-    console.log(req.query);
-    if (!boardId) return res.status(404).json({ message: "boardId not found" });
+    if (!boardId) return res.status(400).json({ message: "boardId not found" });
 
     const list = await List.find({ boardId });
     if (!list) {
