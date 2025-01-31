@@ -92,6 +92,7 @@ const login = async (req, res) => {
         name: user.name,
         email: user.email,
         admin: user.admin,
+        image: user.image,
       },
     });
   } catch (error) {}
