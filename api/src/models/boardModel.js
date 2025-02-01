@@ -11,6 +11,7 @@ const boardSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+    lists: [{ type: mongoose.Schema.Types.ObjectId, ref: "List" }],
   },
   {
     timestamps: true,

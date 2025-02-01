@@ -25,7 +25,12 @@ const getBoard = async (req, res) => {
     if (!userId) {
       return res.status(404).json({ message: "unauthorized access" });
     }
-    const board = await Board.find({ userId });
+    const board = await Board.find({ userId }).populate({
+      path: "lists",
+      populate: {
+        path: "tasks",
+      },
+    });
     res.status(200).json(board);
   } catch (error) {
     res.status(500).json({ message: error, Error: "Error fetching board" });

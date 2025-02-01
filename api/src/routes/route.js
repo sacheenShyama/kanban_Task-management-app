@@ -6,15 +6,11 @@ const {
   getBoard,
   updateBoard,
 } = require("../controllers/boardController");
-const {
-  createList,
-  getList,
-  updateList,
-} = require("../controllers/listControllers");
+const { createList, updateList } = require("../controllers/listControllers");
 const {
   createTask,
-  getTask,
   updateTask,
+  deleteTask,
 } = require("../controllers/taskControllers");
 const router = express.Router();
 
@@ -28,12 +24,11 @@ router.put("/board", authenticateUser, updateBoard);
 
 //below router is for list
 router.post("/list", authenticateUser, createList);
-router.get("/list", authenticateUser, getList);
 router.put("/list", authenticateUser, updateList);
 
 //below route is for task
 router.post("/task", authenticateUser, createTask);
-router.get("/task", authenticateUser, getTask);
 router.put("/task", authenticateUser, updateTask);
+router.delete("/task/:id", authenticateUser, deleteTask);
 
 module.exports = router;

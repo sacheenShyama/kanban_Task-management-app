@@ -10,30 +10,22 @@ const createList = async (req, res) => {
       return res.status(400).json({ message: "title and boardId not found" });
     }
 
-    const maxOrderList = await List.findOne({ boardId }).sort("-order");
-    console.log("1", maxOrderList);
-    const order = maxOrderList ? maxOrderList.order + 1 : 0;
+    const board = await Board.findById(boardId);
+    if (!board) {
+      return res.status(400).json({ message: "board not found" });
+    }
 
-    const list = new List({ title, boardId, order });
+    const list = new List({
+      title,
+      boardId,
+    });
     await list.save();
+    board.lists.push(list);
+    await board.save();
+
     res.status(200).json({ message: "list created" });
   } catch (error) {
     res.status(500).json({ message: error, Error: "Error creating list" });
-  }
-};
-
-const getList = async (req, res) => {
-  try {
-    const boardId = req.query.boardId;
-    if (!boardId) return res.status(400).json({ message: "boardId not found" });
-
-    const list = await List.find({ boardId });
-    if (!list) {
-      return res.status(401).json({ message: "related list not found" });
-    }
-    res.status(200).json(list);
-  } catch (error) {
-    res.status(500).json({ message: error, Error: "Error fetching list" });
   }
 };
 
@@ -66,4 +58,4 @@ const updateList = async (req, res) => {
   }
 };
 
-module.exports = { createList, getList, updateList };
+module.exports = { createList, updateList };

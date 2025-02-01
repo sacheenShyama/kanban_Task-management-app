@@ -23,10 +23,6 @@ const taskSchema = new mongoose.Schema(
       ref: "List",
       required: true,
     },
-    order: {
-      type: Number,
-      required: true,
-    },
   },
   {
     timestamps: true,

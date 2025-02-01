@@ -8,10 +8,7 @@ const listSchema = new mongoose.Schema(
       ref: "Board",
       required: true,
     },
-    order: {
-      type: Number,
-      required: true,
-    },
+    tasks: [{ type: mongoose.Schema.Types.ObjectId, ref: "Task" }],
   },
   {
     timestamps: true,
