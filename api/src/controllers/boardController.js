@@ -39,16 +39,17 @@ const getBoard = async (req, res) => {
 
 const updateBoard = async (req, res) => {
   try {
-    const { boardId, title } = req.body;
+    const { title } = req.body;
+    const id = req.params.id;
     const userId = req.user.id;
 
-    if (!boardId || !title) {
-      return res.status(401).json({ message: "board&title id no found" });
+    if (!id || !title) {
+      return res.status(401).json({ message: "board&title id not found" });
     }
 
     const board = await Board.findOneAndUpdate(
       {
-        _id: boardId,
+        _id: id,
         userId,
       },
       {
@@ -73,22 +74,22 @@ const updateBoard = async (req, res) => {
 };
 const deleteBoard = async (req, res) => {
   try {
-    const boardId = req.params.id;
-    if (!boardId) {
+    const id = req.params.id;
+    if (!id) {
       return res.status(400).json({ message: "details not provided" });
     }
-    const board = await Board.findById({ _id: boardId });
+    const board = await Board.findById({ _id: id });
     if (!board) {
       return res.status(404).json({ message: "board not found" });
     }
 
-    const lists = await List.find({ boardId });
+    const lists = await List.find({ boardId: id });
 
     const listIds = lists.map((list) => list._id);
     await Task.deleteMany({ listId: { $in: listIds } });
 
-    await List.deleteMany({ boardId });
-    await Board.findByIdAndDelete({ _id: boardId });
+    await List.deleteMany({ boardId: id });
+    await Board.findByIdAndDelete({ _id: id });
     res.status(200).json({ message: "Board deleted" });
   } catch (error) {
     res.status(500).json({ message: error, Error: "Error deleting board" });

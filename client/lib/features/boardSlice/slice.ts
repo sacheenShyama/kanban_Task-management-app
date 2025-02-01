@@ -2,6 +2,7 @@ import { useLocalStorage } from "@/hooks/useLocalStorage";
 import { RootState } from "@/lib/store";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { headers } from "next/headers";
 const baseURL = "http://localhost:8000/api/board";
 interface boardState {
   board: any;
@@ -17,13 +18,11 @@ const initialState: boardState = {
   error: null,
 };
 
-// export const handleCreateBoard=createAsyncThunk("createBoard",async()=>{});
 export const handleGetBoard = createAsyncThunk(
   "getBoard",
   async (_, { rejectWithValue }) => {
     try {
       const token = useLocalStorage("kanbanToken").getItem();
-      console.log("chekchek chek heikj ", token);
       if (!token || undefined) throw new Error("Token not found");
 
       const res = await axios.get(`${baseURL}`, {
@@ -35,8 +34,54 @@ export const handleGetBoard = createAsyncThunk(
     }
   }
 );
-// export const handleUpdateBoard=createAsyncThunk("updateBoard",async()=>{});
-// export const handleDeleteBoard=createAsyncThunk("deleteBoard",async()=>{});
+export const handleCreateBoard = createAsyncThunk(
+  "createBoard",
+  async (title: string, { rejectWithValue }) => {
+    try {
+      const token = useLocalStorage("kanbanToken").getItem();
+      if (!token || undefined) throw new Error("Token not found");
+
+      const res = await axios.post(
+        `${baseURL}`,
+        { title },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return res.data;
+    } catch (error) {
+      return rejectWithValue(error || "Failed to fetch board");
+    }
+  }
+);
+
+export const handleUpdateBoard = createAsyncThunk(
+  "updateBoard",
+  async ({ id, title }: { id: string; title: string }, { rejectWithValue }) => {
+    try {
+      const token = useLocalStorage("kanbanToken").getItem();
+      if (!token || undefined) throw new Error("Token not found");
+
+      const res = await axios.put(
+        `${baseURL}/${id}`,
+        { title },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return res.data;
+    } catch (error) {
+      return rejectWithValue(error || "Failed to fetch board");
+    }
+  }
+);
+export const handleDeleteBoard=createAsyncThunk("deleteBoard",async()=>{
+  
+});
 
 const boardSlice = createSlice({
   name: "board",
