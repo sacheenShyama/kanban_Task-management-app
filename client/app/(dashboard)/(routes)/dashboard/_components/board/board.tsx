@@ -1,9 +1,10 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import React from "react";
+import React, { useEffect } from "react";
 import List from "../list/list";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { handleGetBoard } from "@/lib/features/boardSlice/slice";
+import { useRouter } from "next/navigation";
 
 const COLUMNS = [
   { id: "TODO", title: "To Do" },
@@ -38,23 +39,20 @@ const INITIAL_TASKS = [
   },
 ];
 const Board = () => {
-  // const [tasks, setTasks] = useState(INITIAL_TASKS);
-  // const [board, setBoard] = useState(COLUMNS);
-  // const [list, setList] = useState(LIST);
+  const router=useRouter()
   const dispatch =useAppDispatch()
   const {board}=useAppSelector((state)=>state.board);
   
-  const handleBoardCard= ()=>{
-    console.log('frontend hit')
-   dispatch(handleGetBoard());
-
-  }
+  useEffect(()=>{
+    dispatch(handleGetBoard())
+  },[router,dispatch])
+  
   console.log("boardcard",board)
   return (
     <div>
       <div className=" flex justify-end py-2">
         {" "}
-        <Button onClick={handleBoardCard} className="bg-gray-800 text-white rounded-[8] hover:bg-gray-400 ">
+        <Button className="bg-gray-800 text-white rounded-[8] hover:bg-gray-400 ">
           Add Board +
         </Button>{" "}
       </div>
