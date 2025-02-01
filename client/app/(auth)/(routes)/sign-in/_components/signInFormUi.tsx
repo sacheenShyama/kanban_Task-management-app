@@ -3,15 +3,12 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "@/lib/store";
 import ProgressBar from "@/components/progressBar";
 import { handleLogin } from "@/lib/features/authSlice/slice";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 const SignInFormUi = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const { loading, error, user } = useSelector(
-    (state: RootState) => state.auth
-  );
+  const dispatch = useAppDispatch();
+  const { loading, error, user } = useAppSelector((state) => state.auth);
 
   const router = useRouter();
   useEffect(() => {

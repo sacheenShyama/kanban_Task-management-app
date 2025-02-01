@@ -1,14 +1,18 @@
 "use client";
-import { AppDispatch, RootState } from "@/lib/store";
+import { Button } from "@/components/ui/button";
+import { handleLogout } from "@/lib/features/authSlice/slice";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import Image from "next/image";
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
 
 const Navbar = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const { user } = useSelector((state: RootState) => state.auth);
+  const dispatch = useAppDispatch();
+  const { user } = useAppSelector((state) => state.auth);
   console.log(user);
 
+  const logoutUser = () => {
+    dispatch(handleLogout());
+  };
   return (
     <nav className="bg-gray-800">
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
@@ -68,13 +72,13 @@ const Navbar = () => {
             </div>
             <div className="hidden sm:ml-6 sm:block">
               <div className="flex space-x-4">
-                <a
-                  href="#"
+                <Button
+                  onClick={logoutUser}
                   className="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white"
                   aria-current="page"
                 >
                   Logout
-                </a>
+                </Button>
               </div>
             </div>
           </div>

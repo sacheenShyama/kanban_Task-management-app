@@ -5,11 +5,11 @@ import { AppDispatch, RootState } from "@/lib/store";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import ProgressBar from "@/components/progressBar";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 const SignupFormUi = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const { loading, error, user } = useSelector(
+  const dispatch = useAppDispatch<AppDispatch>();
+  const { loading, error, user } = useAppSelector(
     (state: RootState) => state.auth
   );
 

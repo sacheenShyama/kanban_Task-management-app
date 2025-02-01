@@ -3,8 +3,6 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 const register = async (req, res) => {
-  console.log("check", req.body);
-
   try {
     const { name, email, password, image } = req.body;
     if (!name || !email || !password) {
@@ -79,6 +77,9 @@ const login = async (req, res) => {
       {
         id: user._id,
         email: user.email,
+        image: user.image,
+        name: user.name,
+        admin: user.admin,
       },
       process.env.JWT_SECRET,
       { expiresIn: "4h" }
