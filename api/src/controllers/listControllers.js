@@ -58,4 +58,23 @@ const updateList = async (req, res) => {
   }
 };
 
-module.exports = { createList, updateList };
+const deleteList = async (req, res) => {
+  try {
+    const listId = req.params.id;
+    if (!listId) {
+      return res.status(400).json({ message: "listId missing" });
+    }
+
+    const list = await List.findById({ _id: listId });
+    if (!list) {
+      return res.status(404).json({ message: "list not found" });
+    }
+    await Task.deleteMany({ listId });
+    await List.findByIdAndDelete({ _id: listId });
+    res.status(200).json({ message: "list deleted" });
+  } catch (error) {
+    res.status(500).json({ message: error, Error: "Error deleting list" });
+  }
+};
+
+module.exports = { createList, updateList, deleteList };

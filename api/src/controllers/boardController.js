@@ -71,5 +71,28 @@ const updateBoard = async (req, res) => {
     res.status(500).json({ message: error, Error: "Error updating board" });
   }
 };
+const deleteBoard = async (req, res) => {
+  try {
+    const boardId = req.params.id;
+    if (!boardId) {
+      return res.status(400).json({ message: "details not provided" });
+    }
+    const board = await Board.findById({ _id: boardId });
+    if (!board) {
+      return res.status(404).json({ message: "board not found" });
+    }
 
-module.exports = { createBoard, getBoard, updateBoard };
+    const lists = await List.find({ boardId });
+
+    const listIds=lists.map((list)=>list._id);
+    await Task.deleteMany({listId:{$in:listIds}})
+
+    await List.deleteMany({boardId});
+    await Board.findByIdAndDelete({_id:boardId})
+    res.status(200).json({message:"Board deleted"})
+  } catch (error) {
+    res.status(500).json({ message: error, Error: "Error deleting board" });
+  }
+};
+
+module.exports = { createBoard, getBoard, updateBoard, deleteBoard };
