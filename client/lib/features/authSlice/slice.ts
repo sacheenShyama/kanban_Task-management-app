@@ -1,3 +1,4 @@
+import { useLocalStorage } from "@/hooks/useLocalStorage";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 const baseURL = "http://localhost:8000";
@@ -26,7 +27,7 @@ export const handleLogin = createAsyncThunk(
   ) => {
     try {
       const res = await axios.post(`${baseURL}/api/login`, { email, password });
-      localStorage.setItem("kanbanToken", res.data.token);
+      useLocalStorage("kanbanToken").setItem(res.data.token);
       return res.data;
     } catch (error: any) {
       return rejectWithValue(error.response.data.message || "Login failed F");
@@ -34,21 +35,28 @@ export const handleLogin = createAsyncThunk(
   }
 );
 
-export const handleSignup = createAsyncThunk<
-  string,
-  { name: string; email: string; password: string }
->("api/register", async ({ name, email, password }, { rejectWithValue }) => {
-  try {
-    const res = await axios.post(`${baseURL}/api/register`, {
+export const handleSignup = createAsyncThunk(
+  "api/register",
+  async (
+    {
       name,
       email,
       password,
-    });
-    return res.data;
-  } catch (error: any) {
-    return rejectWithValue(error.response.data.message || "Signup failed F");
+    }: { name: string; email: string; password: string },
+    { rejectWithValue }
+  ) => {
+    try {
+      const res = await axios.post(`${baseURL}/api/register`, {
+        name,
+        email,
+        password,
+      });
+      return res.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response.data.message || "Signup failed F");
+    }
   }
-});
+);
 
 const authSlice = createSlice({
   name: "auth",

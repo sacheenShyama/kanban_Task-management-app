@@ -84,12 +84,12 @@ const deleteBoard = async (req, res) => {
 
     const lists = await List.find({ boardId });
 
-    const listIds=lists.map((list)=>list._id);
-    await Task.deleteMany({listId:{$in:listIds}})
+    const listIds = lists.map((list) => list._id);
+    await Task.deleteMany({ listId: { $in: listIds } });
 
-    await List.deleteMany({boardId});
-    await Board.findByIdAndDelete({_id:boardId})
-    res.status(200).json({message:"Board deleted"})
+    await List.deleteMany({ boardId });
+    await Board.findByIdAndDelete({ _id: boardId });
+    res.status(200).json({ message: "Board deleted" });
   } catch (error) {
     res.status(500).json({ message: error, Error: "Error deleting board" });
   }

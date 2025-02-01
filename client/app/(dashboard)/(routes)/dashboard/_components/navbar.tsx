@@ -8,7 +8,6 @@ import React from "react";
 const Navbar = () => {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.auth);
-  console.log(user);
 
   const logoutUser = () => {
     dispatch(handleLogout());

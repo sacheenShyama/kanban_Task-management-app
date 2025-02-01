@@ -1,7 +1,10 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import React, { useState } from "react";
+import React from "react";
 import List from "../list/list";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { handleGetBoard } from "@/lib/features/boardSlice/slice";
+
 const COLUMNS = [
   { id: "TODO", title: "To Do" },
   { id: "IN_PROGRESS", title: "In Progress" },
@@ -35,18 +38,27 @@ const INITIAL_TASKS = [
   },
 ];
 const Board = () => {
-  const [tasks, setTasks] = useState(INITIAL_TASKS);
-  const [board, setBoard] = useState(COLUMNS);
+  // const [tasks, setTasks] = useState(INITIAL_TASKS);
+  // const [board, setBoard] = useState(COLUMNS);
   // const [list, setList] = useState(LIST);
+  const dispatch =useAppDispatch()
+  const {board}=useAppSelector((state)=>state.board);
+  
+  const handleBoardCard= ()=>{
+    console.log('frontend hit')
+   dispatch(handleGetBoard());
+
+  }
+  console.log("boardcard",board)
   return (
     <div>
       <div className=" flex justify-end py-2">
         {" "}
-        <Button className="bg-gray-800 text-white rounded-[8] hover:bg-gray-400 ">
+        <Button onClick={handleBoardCard} className="bg-gray-800 text-white rounded-[8] hover:bg-gray-400 ">
           Add Board +
         </Button>{" "}
       </div>
-      <div className="flex justify-evenly">
+      {/* <div className="flex justify-evenly">
         {board.map((i) => (
           <div
             key={i.id}
@@ -58,7 +70,7 @@ const Board = () => {
             </div>
           </div>
         ))}
-      </div>
+      </div> */}
     </div>
   );
 };
