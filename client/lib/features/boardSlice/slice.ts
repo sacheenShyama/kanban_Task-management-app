@@ -5,14 +5,12 @@ const baseURL = "http://localhost:8000/api/board";
 interface boardState {
   board: any;
   loading: boolean;
-  message: string | null;
   error: string | null;
 }
 
 const initialState: boardState = {
   board: null,
   loading: false,
-  message: null,
   error: null,
 };
 
@@ -120,7 +118,7 @@ const boardSlice = createSlice({
       })
       .addCase(handleCreateBoard.fulfilled, (state, action) => {
         state.loading = false;
-        state.board = [...(state.board || []), action.payload];
+        state.board = [...(state.board || []), action.payload.board];
       })
       .addCase(handleCreateBoard.rejected, (state, action) => {
         state.loading = false;
@@ -133,7 +131,7 @@ const boardSlice = createSlice({
       .addCase(handleUpdateBoard.fulfilled, (state, action) => {
         state.loading = false;
         state.board = state.board.map((b: any) =>
-          b.id === action.payload.id ? action.payload : b
+          b._id === action.payload._id ? action.payload : b
         );
       })
       .addCase(handleUpdateBoard.rejected, (state, action) => {
@@ -146,7 +144,7 @@ const boardSlice = createSlice({
       })
       .addCase(handleDeleteBoard.fulfilled, (state, action) => {
         state.loading = false;
-        state.board = state.board.filter((b: any) => b.id !== action.payload);
+        state.board = state.board.filter((b: any) => b._id !== action.payload);
       })
       .addCase(handleDeleteBoard.rejected, (state, action) => {
         state.loading = false;

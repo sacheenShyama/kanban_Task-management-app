@@ -17,7 +17,7 @@ const initialState: listState = {
   error: null,
 };
 
-const handleCreateList = createAsyncThunk(
+export const handleCreateList = createAsyncThunk(
   "createList",
   async (
     { title, boardId }: { title: string; boardId: string },
@@ -38,7 +38,7 @@ const handleCreateList = createAsyncThunk(
     }
   }
 );
-const handleUpdateList = createAsyncThunk(
+export const handleUpdateList = createAsyncThunk(
   "updateList",
   async ({ title, id }: { title: string; id: string }, { rejectWithValue }) => {
     try {
@@ -56,7 +56,7 @@ const handleUpdateList = createAsyncThunk(
     }
   }
 );
-const handleDeleteList = createAsyncThunk(
+export const handleDeleteList = createAsyncThunk(
   "deleteList",
   async (id: string, { rejectWithValue }) => {
     try {
