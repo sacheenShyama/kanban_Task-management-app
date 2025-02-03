@@ -64,6 +64,12 @@ const List = ({ lists, triggerGetBoardApi }) => {
       toast.error(error || "Error while creating list");
     }
   };
+  const handleDragEnd = (e: DragEvent) => {
+    const { active, over } = e;
+    if (!over) return;
+    const id = active._id as string;
+    const newStatus = over._id as Task["status"];
+  };
   return (
     <>
       <div className="cursor-grab rounded-[12] bg-neutral-800 p-4 shadow-sm hover:shadow-md">

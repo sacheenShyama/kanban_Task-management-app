@@ -17,6 +17,8 @@ const {
   updateTask,
   deleteTask,
 } = require("../controllers/taskControllers");
+const taskDrag = require("../controllers/taskDragController");
+const listDrag = require("../controllers/listDragController");
 const router = express.Router();
 
 router.post("/register", register);
@@ -37,5 +39,9 @@ router.delete("/board/:id", authenticateUser, deleteBoard);
 router.post("/list", authenticateUser, createList);
 router.put("/list/:id", authenticateUser, updateList);
 router.delete("/list/:id", authenticateUser, deleteList);
+
+//drag and drop api
+router.post("/task/drag", authenticateUser, taskDrag);
+router.post("/list/drag", authenticateUser, listDrag);
 
 module.exports = router;

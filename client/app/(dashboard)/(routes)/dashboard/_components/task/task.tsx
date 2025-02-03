@@ -40,11 +40,11 @@ const Task = ({ task, triggerGetBoardApi }) => {
         <p className="mt-2 text-sm text-neutral-400">{tasks.description}</p>
         <div>
           <p className="text-white text-sm mt-2">
-            Due Date:{tasks.dueDate.toString().split("T")[0]}
+            Due Date : {tasks.dueDate.toString().split("T")[0]}
           </p>
         </div>
         <div className="mt-2 flex text-white items-center gap-2">
-          <p className="text-sm">Status:</p>
+          <p className="text-sm">Status :</p>
           <span
             className={clsx(
               "p-1 rounded-[6] text-white",
@@ -58,7 +58,7 @@ const Task = ({ task, triggerGetBoardApi }) => {
         </div>
 
         <div className="mt-2 flex text-white items-center gap-2">
-          <p className="text-sm">Priority:</p>
+          <p className="text-sm">Priority :</p>
           <span
             className={clsx(
               "p-1 rounded-[6] text-white",

@@ -50,7 +50,7 @@ const Container = () => {
           </Button>
         </div>
         <div className="p-4">
-          <div className="flex gap-8">
+          <div className="flex flex-wrap gap-8 justify-center">
             {board &&
               board.map((column: any) => (
                 <Board
