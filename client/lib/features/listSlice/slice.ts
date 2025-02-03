@@ -99,9 +99,9 @@ const listSlice = createSlice({
       })
       .addCase(handleUpdateList.fulfilled, (state, action) => {
         state.loading = false;
-        state.list = state.list.map((b: any) =>
-          b.id === action.payload.id ? action.payload : b
-        );
+        // state.list = state.list.map((b: any) =>
+        //   b._id === action.payload._id ? action.payload : b
+        // );
       })
       .addCase(handleUpdateList.rejected, (state, action) => {
         state.loading = false;
@@ -113,7 +113,7 @@ const listSlice = createSlice({
       })
       .addCase(handleDeleteList.fulfilled, (state, action) => {
         state.loading = false;
-        state.list = state.list.filter((b: any) => b.id !== action.payload);
+        // state.list = state.list.filter((b: any) => b._id !== action.payload);
       })
       .addCase(handleDeleteList.rejected, (state, action) => {
         state.loading = false;

@@ -17,7 +17,7 @@ const initialState: taskState = {
   error: null,
 };
 
-const handleCreateTask = createAsyncThunk(
+export const handleCreateTask = createAsyncThunk(
   "createTask",
   async (
     {
@@ -39,7 +39,7 @@ const handleCreateTask = createAsyncThunk(
   ) => {
     try {
       const token = useLocalStorage("kanbanToken").getItem();
-      if (!token || undefined) throw new Error("Token not found");
+      if (!token) throw new Error("Token not found");
       const res = await axios.post(
         `${baseURL}`,
         { title, description, dueDate, priority, status, listId },
@@ -51,7 +51,7 @@ const handleCreateTask = createAsyncThunk(
     }
   }
 );
-const handleUpdateTask = createAsyncThunk(
+export const handleUpdateTask = createAsyncThunk(
   "updateTask",
   async (
     {
@@ -75,7 +75,7 @@ const handleUpdateTask = createAsyncThunk(
   ) => {
     try {
       const token = useLocalStorage("kanbanToken").getItem();
-      if (!token || undefined) throw new Error("Token not found");
+      if (!token) throw new Error("Token not found");
 
       const res = await axios.put(
         `${baseURL}/${id}`,
@@ -96,7 +96,7 @@ const handleUpdateTask = createAsyncThunk(
     }
   }
 );
-const handleDeleteTask = createAsyncThunk(
+export const handleDeleteTask = createAsyncThunk(
   "deleteTask",
   async (id: string, { rejectWithValue }) => {
     try {
@@ -137,9 +137,9 @@ const taskSlice = createSlice({
       })
       .addCase(handleUpdateTask.fulfilled, (state, action) => {
         state.loading = false;
-        state.task = state.task.map((b: any) =>
-          b.id === action.payload.id ? action.payload : b
-        );
+        // state.task = state.task.map((b: any) =>
+        //   b.id === action.payload.id ? action.payload : b
+        // );
       })
       .addCase(handleUpdateTask.rejected, (state, action) => {
         state.loading = false;
@@ -151,7 +151,7 @@ const taskSlice = createSlice({
       })
       .addCase(handleDeleteTask.fulfilled, (state, action) => {
         state.loading = false;
-        state.task = state.task.filter((b: any) => b.id !== action.payload);
+        // state.task = state.task.filter((b: any) => b.id !== action.payload);
       })
       .addCase(handleDeleteTask.rejected, (state, action) => {
         state.loading = false;

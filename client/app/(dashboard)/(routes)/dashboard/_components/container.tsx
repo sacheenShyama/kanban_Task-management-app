@@ -1,5 +1,5 @@
 "use client";
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useCallback, useEffect, useState } from "react";
 import Navbar from "./navbar";
 import Board from "./board/board";
 import { useRouter } from "next/navigation";
@@ -14,13 +14,19 @@ import toast from "react-hot-toast";
 const Container = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
+  const [trigger, setTrigger] = useState(false);
+
   const { board, loading, error, message } = useAppSelector(
     (state) => state.board
   );
 
+  const triggerGetBoardApi = () => {
+    setTrigger(!trigger);
+  };
+
   useEffect(() => {
     dispatch(handleGetBoard());
-  }, [dispatch, router]);
+  }, [dispatch, router, trigger]);
 
   const createBoard = async () => {
     try {
@@ -47,7 +53,11 @@ const Container = () => {
           <div className="flex gap-8">
             {board &&
               board.map((column: any) => (
-                <Board column={column} key={column._id} />
+                <Board
+                  column={column}
+                  key={column._id}
+                  triggerGetBoardApi={triggerGetBoardApi}
+                />
               ))}
           </div>
         </div>

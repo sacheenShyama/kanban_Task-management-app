@@ -5,6 +5,7 @@ import List from "../list/list";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import {
   handleDeleteBoard,
+  handleGetBoard,
   handleUpdateBoard,
 } from "@/lib/features/boardSlice/slice";
 import { handleCreateList } from "@/lib/features/listSlice/slice";
@@ -15,21 +16,19 @@ import { BiSolidUpArrowSquare } from "react-icons/bi";
 import toast from "react-hot-toast";
 import Loading from "@/components/icons/loading";
 
-const Board = ({ column }) => {
-  const [boards, setBoards] = useState(column);
+const Board = ({ column, triggerGetBoardApi }) => {
   const [boardTitle, setBoardTitle] = useState(column.title);
   const [isEdit, setIsEdit] = useState(true);
   const dispatch = useAppDispatch();
   const inputRef = useRef<HTMLInputElement>(null);
-  const { message, loading, error } = useAppSelector((state) => state.board);
+  const { loading, error } = useAppSelector((state) => state.board);
+
   const showIcon = () => {
     setIsEdit(!isEdit);
   };
   const deleteBoard = async () => {
     try {
-      await dispatch(
-        handleDeleteBoard({ boardId: boards._id, title: "new list" })
-      );
+      await dispatch(handleDeleteBoard(column._id));
       toast.success("Board deleted successfully");
     } catch (error) {
       toast.error(error);
@@ -43,7 +42,7 @@ const Board = ({ column }) => {
   }, [isEdit]);
   const updateBoard = async () => {
     try {
-      await dispatch(handleUpdateBoard({ id: boards._id, title: boardTitle }));
+      await dispatch(handleUpdateBoard({ id: column._id, title: boardTitle }));
       toast.success("Board Updated successfully");
       showIcon();
     } catch (error) {
@@ -52,9 +51,13 @@ const Board = ({ column }) => {
   };
   const createList = async () => {
     try {
-      await dispatch(handleCreateList());
+      await dispatch(
+        handleCreateList({ boardId: column._id, title: "Last blood" })
+      );
+      toast.success("List created successfully");
+      triggerGetBoardApi();
     } catch (error) {
-      toast.error(error || "Error while creating list");
+      toast.error("Error while creating list");
     }
   };
   return (
@@ -94,12 +97,16 @@ const Board = ({ column }) => {
         </div>
       </div>
       <div className="flex flex-1 flex-col gap-4">
-        {boards.lists.map((list: any) => (
-          <List key={list._id} lists={list} />
+        {column.lists.map((list: any) => (
+          <List
+            key={list._id}
+            lists={list}
+            triggerGetBoardApi={triggerGetBoardApi}
+          />
         ))}
         <Button
           onClick={createList}
-          className="bg-white rounded-[4] hover:bg-green-200"
+          className="bg-white rounded-[4] hover:bg-green-300"
         >
           ADD LIST +
         </Button>

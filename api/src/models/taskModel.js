@@ -15,7 +15,7 @@ const taskSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["Blocked", "Review", "Completed"],
+      enum: ["Pending", "Review", "Completed"],
       default: "Review",
     },
     listId: {
