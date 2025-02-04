@@ -6,16 +6,18 @@ import { useRouter } from "next/navigation";
 import ProgressBar from "@/components/progressBar";
 import { handleLogin } from "@/lib/features/authSlice/slice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import toast from "react-hot-toast";
 const SignInFormUi = () => {
   const dispatch = useAppDispatch();
   const { loading, error, user } = useAppSelector((state) => state.auth);
 
   const router = useRouter();
-  useEffect(() => {
-    if (user) {
-      router.push("/dashboard");
-    }
-  }, [router, user]);
+  // useEffect(() => {
+  //   console.log(user);
+  //   if (user) {
+  //     router.push("/dashboard");
+  //   }
+  // }, [router, user]);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -26,8 +28,13 @@ const SignInFormUi = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await dispatch(handleLogin(formData));
-    setFormData({ email: "", password: "" });
+    try {
+      await dispatch(handleLogin(formData)).unwrap();
+      router.push("/dashboard");
+      setFormData({ email: "", password: "" });
+    } catch (error) {
+      toast.error(error);
+    }
   };
   return (
     <>

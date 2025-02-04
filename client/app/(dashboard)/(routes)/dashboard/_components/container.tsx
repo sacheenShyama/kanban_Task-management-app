@@ -1,6 +1,7 @@
 "use client";
 import React, { Fragment, useEffect, useState } from "react";
 import { DndContext, DragEndEvent } from "@dnd-kit/core";
+import { RiLogoutCircleLine } from "react-icons/ri";
 
 import Navbar from "./navbar";
 import Board from "./board/board";
@@ -18,6 +19,8 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { handleListDragDrop } from "@/lib/features/listSlice/slice";
 import { totalmem } from "os";
+import { handleLogout } from "@/lib/features/authSlice/slice";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
 const Container = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -26,7 +29,6 @@ const Container = () => {
   const { board, loading, error, message } = useAppSelector(
     (state) => state.board
   );
-
   const triggerGetBoardApi = () => {
     setTrigger(!trigger);
   };
@@ -57,11 +59,23 @@ const Container = () => {
       toast.error(error);
     }
   };
+  const logOut = () => {
+    localStorage.removeItem("kanbanToken");
+    router.push("/sign-in");
+  };
   return (
     <div className="overflow-y-auto">
       {loading && <ProgressBar />}
       <div className="">
-        <div className="container flex justify-end mt-6">
+        <div className="flex flex-wrap gap-8  justify-around mt-6">
+          <div className="cursor-pointer" onClick={logOut}>
+            <RiLogoutCircleLine color="white" size={30} />
+          </div>
+          <div>
+            <p className="text-white">
+              Welcome to KanBan board, Now you can manage your task at ease
+            </p>
+          </div>
           <Button
             onClick={createBoard}
             className="bg-white  text-black rounded-[8] hover:bg-gray-400 "

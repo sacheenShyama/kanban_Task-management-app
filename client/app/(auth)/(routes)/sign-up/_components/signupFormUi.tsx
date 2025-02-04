@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import ProgressBar from "@/components/progressBar";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import toast from "react-hot-toast";
 const SignupFormUi = () => {
   const dispatch = useAppDispatch<AppDispatch>();
   const { loading, error, user } = useAppSelector(
@@ -14,12 +15,12 @@ const SignupFormUi = () => {
   );
 
   const router = useRouter();
-  useEffect(() => {
-    console.log(user);
-    if (user) {
-      router.push("/dashboard");
-    }
-  }, [router, user]);
+  // useEffect(() => {
+  //   console.log(user);
+  //   if (user) {
+  //     router.push("/dashboard");
+  //   }
+  // }, [router, user]);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -29,10 +30,15 @@ const SignupFormUi = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    dispatch(handleSignup(formData));
-    setFormData({ name: "", email: "", password: "" });
+    try {
+      await dispatch(handleSignup(formData)).unwrap();
+      setFormData({ name: "", email: "", password: "" });
+      router.push("/sign-in");
+    } catch (error) {
+      toast.error(error);
+    }
   };
 
   return (

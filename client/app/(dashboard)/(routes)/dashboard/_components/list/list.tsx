@@ -43,7 +43,7 @@ const List: React.FC<listProp> = ({ lists, triggerGetBoardApi }) => {
   const updateList = async () => {
     try {
       await dispatch(handleUpdateList({ id: lists._id, title: listTitle }));
-      toast.success("Board Updated successfully");
+      toast.success("List Updated successfully");
       showIcon();
       triggerGetBoardApi();
     } catch (error) {
@@ -54,7 +54,7 @@ const List: React.FC<listProp> = ({ lists, triggerGetBoardApi }) => {
   const deleteList = async () => {
     try {
       await dispatch(handleDeleteList(lists._id));
-      toast.success("Board deleted successfully");
+      toast.success("List deleted successfully");
       triggerGetBoardApi();
     } catch (error) {
       toast.error(error || "Error while deleting list");
