@@ -1,5 +1,5 @@
 "use client";
-import React, { FormEvent, useEffect, useState } from "react";
+import React, { FormEvent, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -27,8 +27,12 @@ import { useAppDispatch } from "@/lib/hooks";
 import { handleUpdateTask } from "@/lib/features/taskSlice/slice";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { useRouter } from "next/navigation";
-
-const Modal = ({ task, triggerGetBoardApi }) => {
+import { taskInterface } from "@/interface/interface";
+interface modalProp {
+  task: taskInterface;
+  triggerGetBoardApi: () => void;
+}
+const Modal: React.FC<modalProp> = ({ task, triggerGetBoardApi }) => {
   const [title, setTitle] = useState(task.title);
   const [description, setDescription] = useState(task.description);
   const [dueDate, setDueDate] = useState(task.dueDate);
@@ -86,7 +90,6 @@ const Modal = ({ task, triggerGetBoardApi }) => {
                 className="col-span-3 text-white outline-none border-none rounded-[4] bg-neutral-700"
               />
             </div>
-
             <div className="grid w-full max-w-sm items-start gap-1.5">
               <Label htmlFor="description" className="text-start text-white">
                 Description
@@ -98,7 +101,6 @@ const Modal = ({ task, triggerGetBoardApi }) => {
                 className="col-span-3 text-white border-none outline-none rounded-[4] bg-neutral-700"
               />
             </div>
-
             <div className="grid w-full max-w-sm items-start gap-1.5">
               <Label htmlFor="dueDate" className="text-start text-white">
                 Due-Date
@@ -111,7 +113,6 @@ const Modal = ({ task, triggerGetBoardApi }) => {
                 className="col-span-3 text-white border-none outline-none rounded-[4] bg-neutral-700"
               />
             </div>
-
             <div className="grid w-full max-w-sm items-start gap-1.5">
               <Label htmlFor="status" className="text-start text-white">
                 Status
@@ -142,7 +143,6 @@ const Modal = ({ task, triggerGetBoardApi }) => {
                 </SelectContent>
               </Select>
             </div>
-
             <div className="grid w-full max-w-sm items-start gap-1.5">
               <Label htmlFor="priority" className="text-start text-white">
                 Priority
@@ -174,7 +174,6 @@ const Modal = ({ task, triggerGetBoardApi }) => {
               </Select>
             </div>
           </div>
-
           <DialogFooter>
             <DialogClose asChild>
               <Button

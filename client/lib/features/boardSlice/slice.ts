@@ -1,15 +1,16 @@
 import { useLocalStorage } from "@/hooks/useLocalStorage";
+import { boardInterface } from "@/interface/interface";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 const baseURL = "http://localhost:8000/api/board";
 interface boardState {
-  board: any;
+  board: boardInterface[];
   loading: boolean;
   error: string | null;
 }
 
 const initialState: boardState = {
-  board: null,
+  board: [] as boardInterface[],
   loading: false,
   error: null,
 };
@@ -130,7 +131,7 @@ const boardSlice = createSlice({
       })
       .addCase(handleUpdateBoard.fulfilled, (state, action) => {
         state.loading = false;
-        state.board = state.board.map((b: any) =>
+        state.board = state.board.map((b) =>
           b._id === action.payload._id ? action.payload : b
         );
       })
@@ -144,7 +145,7 @@ const boardSlice = createSlice({
       })
       .addCase(handleDeleteBoard.fulfilled, (state, action) => {
         state.loading = false;
-        state.board = state.board.filter((b: any) => b._id !== action.payload);
+        state.board = state.board.filter((b) => b._id !== action.payload);
       })
       .addCase(handleDeleteBoard.rejected, (state, action) => {
         state.loading = false;

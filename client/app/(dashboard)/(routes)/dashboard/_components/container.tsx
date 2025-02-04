@@ -1,9 +1,6 @@
 "use client";
-import React, { Fragment, useEffect, useState } from "react";
-import { closestCorners, DndContext, DragEndEvent } from "@dnd-kit/core";
+import React, { useEffect, useState } from "react";
 import { RiLogoutCircleLine } from "react-icons/ri";
-
-import Navbar from "./navbar";
 import Board from "./board/board";
 import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
@@ -14,8 +11,8 @@ import {
 import { Button } from "@/components/ui/button";
 import ProgressBar from "@/components/progressBar";
 import { FaPlus } from "react-icons/fa6";
-
 import toast from "react-hot-toast";
+import { closestCorners, DndContext, DragEndEvent } from "@dnd-kit/core";
 import { handleListDragDrop } from "@/lib/features/listSlice/slice";
 
 const Container: React.FC = () => {
@@ -43,19 +40,24 @@ const Container: React.FC = () => {
   const dragEnd = async (e: DragEndEvent) => {
     const id = e.active.id as string;
     const targetBoardId = e.over?.id as string;
-    const currentBoardId = e.active.data.current;
-    if (e.over === null || targetBoardId === null) {
+    const currentBoardId = e.active.data.current?.currentBoardId;
+    console.log(":::::::::e", id, currentBoardId, targetBoardId);
+    if (
+      e.over === null ||
+      targetBoardId === null ||
+      targetBoardId === currentBoardId
+    ) {
       return;
     }
-    // try {
-    //   await dispatch(
-    //     handleListDragDrop({ id, targetBoardId, currentBoardId })
-    //   ).unwrap();
-    //   toast.success("List moved successfully");
-    //   triggerGetBoardApi();
-    // } catch (error) {
-    //   toast.error(error);
-    // }
+    try {
+      await dispatch(
+        handleListDragDrop({ id, targetBoardId, currentBoardId })
+      ).unwrap();
+      toast.success("List moved successfully");
+      triggerGetBoardApi();
+    } catch (error) {
+      toast.error(error);
+    }
   };
   const logOut = () => {
     localStorage.removeItem("kanbanToken");
@@ -81,20 +83,19 @@ const Container: React.FC = () => {
             ADD BOARD <FaPlus />
           </Button>
         </div>
-
         <div className="p-3 mt-6">
-          <div className="flex flex-wrap gap-8 justify-center">
-            <DndContext collisionDetection={closestCorners} onDragEnd={dragEnd}>
+          <DndContext collisionDetection={closestCorners} onDragEnd={dragEnd}>
+            <div className="flex flex-wrap gap-8 justify-center">
               {board &&
-                board.map((column: any) => (
+                board.map((column) => (
                   <Board
                     column={column}
                     key={column._id}
                     triggerGetBoardApi={triggerGetBoardApi}
                   />
                 ))}
-            </DndContext>
-          </div>
+            </div>
+          </DndContext>
         </div>
       </div>
     </div>

@@ -1,13 +1,15 @@
 "use client";
 import React, { useRef, useState } from "react";
-import { useDraggable } from "@dnd-kit/core";
-import { CSS } from "@dnd-kit/utilities";
+import {
+
+  useDraggable,
+} from "@dnd-kit/core";
 
 import Task from "../task/task";
 import { Button } from "@/components/ui/button";
 import { FaEdit } from "react-icons/fa";
 import { BiSolidUpArrowSquare } from "react-icons/bi";
-import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { useAppDispatch } from "@/lib/hooks";
 import {
   handleDeleteList,
   handleUpdateList,
@@ -16,9 +18,12 @@ import toast from "react-hot-toast";
 import { MdDeleteForever } from "react-icons/md";
 import { handleCreateTask } from "@/lib/features/taskSlice/slice";
 import { FaDiceSix } from "react-icons/fa6";
+import { listInterface } from "@/interface/interface";
+
+import { CSS } from "@dnd-kit/utilities";
 
 interface listProp {
-  lists: unknown;
+  lists: listInterface;
   triggerGetBoardApi: () => void;
 }
 
@@ -26,18 +31,19 @@ const List: React.FC<listProp> = ({ lists, triggerGetBoardApi }) => {
   const [isEdit, setIsEdit] = useState(true);
   const inputRef = useRef<HTMLInputElement>(null);
   const dispatch = useAppDispatch();
-  const { loading, error } = useAppSelector((state) => state.list);
   const [listTitle, setListTitle] = useState(lists.title);
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: lists._id,
-    data: lists.boardId,
+    data: { currentBoardId: lists.boardId },
   });
+ 
   const showIcon = () => {
     setIsEdit(!isEdit);
   };
 
   const style = {
     transform: CSS.Translate.toString(transform),
+
   };
 
   const updateList = async () => {
@@ -108,7 +114,6 @@ const List: React.FC<listProp> = ({ lists, triggerGetBoardApi }) => {
             )}
           </div>
           <div className="w-full ml-2">
-            {" "}
             {isEdit ? (
               <span className="pl-[4] bg-neutral-800 rounded ">
                 {listTitle}

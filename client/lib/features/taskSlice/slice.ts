@@ -1,17 +1,18 @@
+import { taskInterface } from "./../../../interface/interface";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 const baseURL = "http://localhost:8000/api/task";
 
 interface taskState {
-  task: any;
+  task: taskInterface[];
   loading: boolean;
   message: string | null;
   error: string | null;
 }
 
 const initialState: taskState = {
-  task: null,
+  task: [] as taskInterface[],
   loading: false,
   message: null,
   error: null,
@@ -170,9 +171,9 @@ const taskSlice = createSlice({
       })
       .addCase(handleUpdateTask.fulfilled, (state, action) => {
         state.loading = false;
-        // state.task = state.task.map((b: any) =>
-        //   b.id === action.payload.id ? action.payload : b
-        // );
+        state.task = state.task.map((b) =>
+          b._id === action.payload._id ? action.payload : b
+        );
       })
       .addCase(handleUpdateTask.rejected, (state, action) => {
         state.loading = false;
@@ -184,7 +185,7 @@ const taskSlice = createSlice({
       })
       .addCase(handleDeleteTask.fulfilled, (state, action) => {
         state.loading = false;
-        // state.task = state.task.filter((b: any) => b.id !== action.payload);
+        state.task = state.task.filter((b) => b._id !== action.payload);
       })
       .addCase(handleDeleteTask.rejected, (state, action) => {
         state.loading = false;

@@ -1,17 +1,18 @@
 import { useLocalStorage } from "@/hooks/useLocalStorage";
+import { listInterface } from "@/interface/interface";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 const baseURL = "http://localhost:8000/api/list";
 
 interface listState {
-  list: any;
+  list: listInterface[];
   loading: boolean;
   message: string | null;
   error: string | null;
 }
 
 const initialState: listState = {
-  list: null,
+  list: [] as listInterface[],
   loading: false,
   message: null,
   error: null,
@@ -129,9 +130,9 @@ const listSlice = createSlice({
       })
       .addCase(handleUpdateList.fulfilled, (state, action) => {
         state.loading = false;
-        // state.list = state.list.map((b: any) =>
-        //   b._id === action.payload._id ? action.payload : b
-        // );
+        state.list = state.list.map((b) =>
+          b._id === action.payload._id ? action.payload : b
+        );
       })
       .addCase(handleUpdateList.rejected, (state, action) => {
         state.loading = false;
@@ -143,7 +144,7 @@ const listSlice = createSlice({
       })
       .addCase(handleDeleteList.fulfilled, (state, action) => {
         state.loading = false;
-        // state.list = state.list.filter((b: any) => b._id !== action.payload);
+        state.list = state.list.filter((b) => b._id !== action.payload);
       })
       .addCase(handleDeleteList.rejected, (state, action) => {
         state.loading = false;
@@ -155,7 +156,7 @@ const listSlice = createSlice({
       })
       .addCase(handleListDragDrop.fulfilled, (state, action) => {
         state.loading = false;
-        // state.message = action.payload.data;
+        state.message = action.payload.data;
       })
       .addCase(handleListDragDrop.rejected, (state, action) => {
         state.loading = false;

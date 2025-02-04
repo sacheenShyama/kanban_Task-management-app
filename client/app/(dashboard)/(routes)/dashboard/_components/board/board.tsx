@@ -1,32 +1,33 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import React, { Fragment, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDroppable } from "@dnd-kit/core";
-
 import List from "../list/list";
-import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { useAppDispatch } from "@/lib/hooks";
 import {
   handleDeleteBoard,
-  handleGetBoard,
   handleUpdateBoard,
 } from "@/lib/features/boardSlice/slice";
 import { handleCreateList } from "@/lib/features/listSlice/slice";
-import { useRouter } from "next/navigation";
 import { MdDeleteForever } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
 import { BiSolidUpArrowSquare } from "react-icons/bi";
 import toast from "react-hot-toast";
-import Loading from "@/components/icons/loading";
+import { boardInterface, listInterface } from "@/interface/interface";
 
-const Board = ({ column, triggerGetBoardApi }) => {
+interface boardProps {
+  column: boardInterface;
+  triggerGetBoardApi: () => void;
+}
+const Board: React.FC<boardProps> = ({ column, triggerGetBoardApi }) => {
   const [boardTitle, setBoardTitle] = useState(column.title);
   const [isEdit, setIsEdit] = useState(true);
   const dispatch = useAppDispatch();
   const inputRef = useRef<HTMLInputElement>(null);
-  const { loading, error } = useAppSelector((state) => state.board);
-  const { isOver, setNodeRef } = useDroppable({ id: column._id });
+  const { isOver, setNodeRef } = useDroppable({
+    id: column._id,
+  });
 
-  // useEffect(() => {}, [isOver]);
   const showIcon = () => {
     setIsEdit(!isEdit);
   };
@@ -70,7 +71,6 @@ const Board = ({ column, triggerGetBoardApi }) => {
       ref={setNodeRef}
       className="flex w-80 h-fit flex-col rounded-[12] bg-neutral-900 p-4"
     >
-      {/* {true && <Loading />} */}
       <div className="flex justify-between mb-4 font-bold text-neutral-100">
         <div onClick={showIcon} className="p-0 m-0">
           {isEdit ? (
@@ -104,7 +104,7 @@ const Board = ({ column, triggerGetBoardApi }) => {
         </div>
       </div>
       <div className="flex flex-1 flex-col gap-4">
-        {column.lists.map((list: any) => (
+        {column.lists.map((list: listInterface) => (
           <List
             key={list._id}
             lists={list}
