@@ -110,12 +110,9 @@ const List: React.FC<listProp> = ({ lists, triggerGetBoardApi }) => {
           <div className="w-full ml-2">
             {" "}
             {isEdit ? (
-              <input
-                placeholder={`${listTitle}`}
-                className="pl-[1] bg-neutral-800 rounded outline-none text-wrap "
-                type="text"
-                disabled={true}
-              />
+              <span className="pl-[4] bg-neutral-800 rounded ">
+                {listTitle}
+              </span>
             ) : (
               <input
                 ref={inputRef}

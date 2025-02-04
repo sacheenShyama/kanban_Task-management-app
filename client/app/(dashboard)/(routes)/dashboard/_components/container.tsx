@@ -1,6 +1,6 @@
 "use client";
 import React, { Fragment, useEffect, useState } from "react";
-import { DndContext, DragEndEvent } from "@dnd-kit/core";
+import { closestCorners, DndContext, DragEndEvent } from "@dnd-kit/core";
 import { RiLogoutCircleLine } from "react-icons/ri";
 
 import Navbar from "./navbar";
@@ -16,19 +16,14 @@ import ProgressBar from "@/components/progressBar";
 import { FaPlus } from "react-icons/fa6";
 
 import toast from "react-hot-toast";
-import axios from "axios";
 import { handleListDragDrop } from "@/lib/features/listSlice/slice";
-import { totalmem } from "os";
-import { handleLogout } from "@/lib/features/authSlice/slice";
-import { useLocalStorage } from "@/hooks/useLocalStorage";
-const Container = () => {
+
+const Container: React.FC = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const [trigger, setTrigger] = useState(false);
 
-  const { board, loading, error, message } = useAppSelector(
-    (state) => state.board
-  );
+  const { board, loading } = useAppSelector((state) => state.board);
   const triggerGetBoardApi = () => {
     setTrigger(!trigger);
   };
@@ -49,15 +44,18 @@ const Container = () => {
     const id = e.active.id as string;
     const targetBoardId = e.over?.id as string;
     const currentBoardId = e.active.data.current;
-    try {
-      await dispatch(
-        handleListDragDrop({ id, targetBoardId, currentBoardId })
-      ).unwrap();
-      toast.success("List moved successfully");
-      triggerGetBoardApi();
-    } catch (error) {
-      toast.error(error);
+    if (e.over === null || targetBoardId === null) {
+      return;
     }
+    // try {
+    //   await dispatch(
+    //     handleListDragDrop({ id, targetBoardId, currentBoardId })
+    //   ).unwrap();
+    //   toast.success("List moved successfully");
+    //   triggerGetBoardApi();
+    // } catch (error) {
+    //   toast.error(error);
+    // }
   };
   const logOut = () => {
     localStorage.removeItem("kanbanToken");
@@ -86,7 +84,7 @@ const Container = () => {
 
         <div className="p-3 mt-6">
           <div className="flex flex-wrap gap-8 justify-center">
-            <DndContext onDragEnd={dragEnd}>
+            <DndContext collisionDetection={closestCorners} onDragEnd={dragEnd}>
               {board &&
                 board.map((column: any) => (
                   <Board

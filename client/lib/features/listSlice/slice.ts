@@ -87,7 +87,7 @@ export const handleListDragDrop = createAsyncThunk(
     try {
       const token = useLocalStorage("kanbanToken").getItem();
       if (!token || undefined) throw new Error("Token not found");
-
+      console.log("::::check api hit from redux");
       const res = await axios.post(
         `${baseURL}/drag`,
         {
@@ -98,7 +98,7 @@ export const handleListDragDrop = createAsyncThunk(
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
-      return res;
+      return res.data;
     } catch (error) {
       return rejectWithValue(error || "Failed to create list");
     }

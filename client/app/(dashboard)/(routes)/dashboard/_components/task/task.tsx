@@ -48,10 +48,10 @@ const Task: React.FC<TaskProp> = ({ task, triggerGetBoardApi }) => {
             Due Date : {tasks.dueDate.toString().split("T")[0]}
           </p>
         </div>
-        <div className="mt-2 flex  items-center">
+        <div className="mt-2 flex  justify-between">
           <p
             className={clsx(
-              "rounded-[6]",
+              "rounded-[6] text-sm",
               tasks.status === "Pending" && "text-yellow-500",
               tasks.status === "Review" && "text-blue-500",
               tasks.status === "Completed" && "text-green-500"
@@ -59,12 +59,10 @@ const Task: React.FC<TaskProp> = ({ task, triggerGetBoardApi }) => {
           >
             Status : {tasks.status}
           </p>
-        </div>
-
-        <div className="mt-2 flex  items-center">
+          <p className="text-white">|</p>
           <p
             className={clsx(
-              "rounded-[6]",
+              "rounded-[6] text-sm",
               tasks.priority === "Low" && "text-green-500",
               tasks.priority === "Medium" && "text-orange-500",
               tasks.priority === "High" && "text-red-500"
@@ -73,6 +71,8 @@ const Task: React.FC<TaskProp> = ({ task, triggerGetBoardApi }) => {
             Priority : {tasks.priority}
           </p>
         </div>
+
+        <div className="mt-2 flex  items-center"></div>
       </div>
     </>
   );

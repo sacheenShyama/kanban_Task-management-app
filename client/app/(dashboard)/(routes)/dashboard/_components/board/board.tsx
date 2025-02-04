@@ -68,7 +68,7 @@ const Board = ({ column, triggerGetBoardApi }) => {
   return (
     <div
       ref={setNodeRef}
-      className="flex w-80 flex-col rounded-[12] bg-neutral-900 p-4"
+      className="flex w-80 h-fit flex-col rounded-[12] bg-neutral-900 p-4"
     >
       {/* {true && <Loading />} */}
       <div className="flex justify-between mb-4 font-bold text-neutral-100">
@@ -85,12 +85,7 @@ const Board = ({ column, triggerGetBoardApi }) => {
         </div>
         <div className="w-full ml-2">
           {isEdit ? (
-            <input
-              placeholder={`${boardTitle}`}
-              className="pl-[4] bg-neutral-900 rounded outline-none text-wrap "
-              type="text"
-              disabled={true}
-            />
+            <span className="pl-[4] bg-neutral-900 rounded ">{boardTitle}</span>
           ) : (
             <input
               ref={inputRef}

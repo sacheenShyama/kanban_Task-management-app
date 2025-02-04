@@ -25,6 +25,8 @@ import {
 import toast from "react-hot-toast";
 import { useAppDispatch } from "@/lib/hooks";
 import { handleUpdateTask } from "@/lib/features/taskSlice/slice";
+import { DialogClose } from "@radix-ui/react-dialog";
+import { useRouter } from "next/navigation";
 
 const Modal = ({ task, triggerGetBoardApi }) => {
   const [title, setTitle] = useState(task.title);
@@ -32,7 +34,7 @@ const Modal = ({ task, triggerGetBoardApi }) => {
   const [dueDate, setDueDate] = useState(task.dueDate);
   const [status, setStatus] = useState(task.status);
   const [priority, setPriority] = useState(task.priority);
-
+  const router = useRouter();
   const dispatch = useAppDispatch();
 
   const handleSubmit = async (e: FormEvent) => {
@@ -51,6 +53,7 @@ const Modal = ({ task, triggerGetBoardApi }) => {
       );
       toast.success("Task updated successfully");
       triggerGetBoardApi();
+      router.refresh();
     } catch (error) {
       toast.error(error || "Error updating task");
     }
@@ -77,6 +80,7 @@ const Modal = ({ task, triggerGetBoardApi }) => {
               </Label>
               <Input
                 id="title"
+                type="text"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 className="col-span-3 text-white outline-none border-none rounded-[4] bg-neutral-700"
@@ -172,12 +176,14 @@ const Modal = ({ task, triggerGetBoardApi }) => {
           </div>
 
           <DialogFooter>
-            <Button
-              type="submit"
-              className="text-black bg-white hover:bg-neutral-400"
-            >
-              Save changes
-            </Button>
+            <DialogClose asChild>
+              <Button
+                type="submit"
+                className="text-black bg-white hover:bg-neutral-400"
+              >
+                Save changes
+              </Button>
+            </DialogClose>
           </DialogFooter>
         </form>
       </DialogContent>
