@@ -24,7 +24,7 @@ const Board: React.FC<boardProps> = ({ column, triggerGetBoardApi }) => {
   const [isEdit, setIsEdit] = useState(true);
   const dispatch = useAppDispatch();
   const inputRef = useRef<HTMLInputElement>(null);
-  const { isOver, setNodeRef } = useDroppable({
+  const { setNodeRef } = useDroppable({
     id: column._id,
   });
 
@@ -57,7 +57,7 @@ const Board: React.FC<boardProps> = ({ column, triggerGetBoardApi }) => {
   const createList = async () => {
     try {
       await dispatch(
-        handleCreateList({ boardId: column._id, title: "Last blood" })
+        handleCreateList({ boardId: column._id, title: "<- change list title" })
       );
       toast.success("List created successfully");
       triggerGetBoardApi();

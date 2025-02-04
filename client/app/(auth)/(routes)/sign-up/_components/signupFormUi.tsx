@@ -4,29 +4,22 @@ import { handleSignup } from "@/lib/features/authSlice/slice";
 import { AppDispatch, RootState } from "@/lib/store";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import ProgressBar from "@/components/progressBar";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import toast from "react-hot-toast";
 const SignupFormUi = () => {
   const dispatch = useAppDispatch<AppDispatch>();
-  const { loading, error, user } = useAppSelector(
-    (state: RootState) => state.auth
-  );
+  const { loading, error } = useAppSelector((state: RootState) => state.auth);
 
   const router = useRouter();
-  // useEffect(() => {
-  //   console.log(user);
-  //   if (user) {
-  //     router.push("/dashboard");
-  //   }
-  // }, [router, user]);
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
   });
-  const handleChange = (e: React.ChangeEvent) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 

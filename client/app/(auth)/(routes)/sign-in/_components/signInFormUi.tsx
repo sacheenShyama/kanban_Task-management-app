@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import ProgressBar from "@/components/progressBar";
 import { handleLogin } from "@/lib/features/authSlice/slice";
@@ -9,20 +9,15 @@ import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import toast from "react-hot-toast";
 const SignInFormUi = () => {
   const dispatch = useAppDispatch();
-  const { loading, error, user } = useAppSelector((state) => state.auth);
+  const { loading, error } = useAppSelector((state) => state.auth);
 
   const router = useRouter();
-  // useEffect(() => {
-  //   console.log(user);
-  //   if (user) {
-  //     router.push("/dashboard");
-  //   }
-  // }, [router, user]);
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
-  const handleChange = (e: React.ChangeEvent) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 

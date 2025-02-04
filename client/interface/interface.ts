@@ -1,7 +1,7 @@
 export interface boardInterface {
   _id: string;
   title: string;
-  lists: listInterface;
+  lists: listInterface[];
   userId: string;
 }
 
@@ -9,7 +9,7 @@ export interface listInterface {
   _id: string;
   title: string;
   boardId: string;
-  tasks: taskInterface;
+  tasks: taskInterface[];
 }
 
 export interface taskInterface {
@@ -20,4 +20,9 @@ export interface taskInterface {
   priority: string;
   status: string;
   listId: string;
+}
+export interface userInterface {
+  email: string;
+  name: string;
+  image: string;
 }

@@ -48,7 +48,7 @@ const Modal: React.FC<modalProp> = ({ task, triggerGetBoardApi }) => {
         handleUpdateTask({
           title,
           description,
-          dueDate,
+          dueDate: dueDate.toString(),
           status,
           priority,
           id: task._id,
@@ -107,7 +107,7 @@ const Modal: React.FC<modalProp> = ({ task, triggerGetBoardApi }) => {
               </Label>
               <Input
                 id="dueDate"
-                value={dueDate}
+                value={dueDate instanceof Date ? dueDate.toISOString().split('T')[0] : dueDate}
                 onChange={(e) => setDueDate(e.target.value)}
                 type="date"
                 className="col-span-3 text-white border-none outline-none rounded-[4] bg-neutral-700"

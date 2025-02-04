@@ -1,10 +1,11 @@
 import { useLocalStorage } from "@/hooks/useLocalStorage";
+import { userInterface } from "@/interface/interface";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 const baseURL = "http://localhost:8000";
 
 interface authState {
-  user: any;
+  user: userInterface;
   loading: boolean;
   message: string | null;
   error: string | null;
@@ -12,7 +13,7 @@ interface authState {
 }
 
 const initialState: authState = {
-  user: null,
+  user: {} as userInterface,
   loading: false,
   message: null,
   error: null,
@@ -29,8 +30,9 @@ export const handleLogin = createAsyncThunk(
       const res = await axios.post(`${baseURL}/api/login`, { email, password });
       useLocalStorage("kanbanToken").setItem(res.data.token);
       return res.data;
-    } catch (error: any) {
-      return rejectWithValue(error.response.data.message || "Login failed F");
+    } catch (error) {
+      console.log(error, "try again login");
+      return rejectWithValue("Login failed F");
     }
   }
 );
@@ -52,8 +54,9 @@ export const handleSignup = createAsyncThunk(
         password,
       });
       return res.data;
-    } catch (error: any) {
-      return rejectWithValue(error.response.data.message || "Signup failed F");
+    } catch (error) {
+      console.log(error);
+      return rejectWithValue("Try again Signup");
     }
   }
 );

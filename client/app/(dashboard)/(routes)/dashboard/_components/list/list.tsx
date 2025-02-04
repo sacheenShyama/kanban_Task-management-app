@@ -1,9 +1,6 @@
 "use client";
 import React, { useRef, useState } from "react";
-import {
-
-  useDraggable,
-} from "@dnd-kit/core";
+import { useDraggable } from "@dnd-kit/core";
 
 import Task from "../task/task";
 import { Button } from "@/components/ui/button";
@@ -36,14 +33,13 @@ const List: React.FC<listProp> = ({ lists, triggerGetBoardApi }) => {
     id: lists._id,
     data: { currentBoardId: lists.boardId },
   });
- 
+
   const showIcon = () => {
     setIsEdit(!isEdit);
   };
 
   const style = {
     transform: CSS.Translate.toString(transform),
-
   };
 
   const updateList = async () => {
@@ -71,8 +67,8 @@ const List: React.FC<listProp> = ({ lists, triggerGetBoardApi }) => {
     try {
       await dispatch(
         handleCreateTask({
-          title: "your task",
-          description: "default description",
+          title: "<- change task title",
+          description: "default description HIRE ME | HIRE ME ",
           dueDate: new Date().toISOString(),
           priority: "Low",
           status: "Pending",

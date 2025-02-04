@@ -31,7 +31,7 @@ const Container: React.FC = () => {
 
   const createBoard = async () => {
     try {
-      const res = await dispatch(handleCreateBoard("Your Board new"));
+      const res = await dispatch(handleCreateBoard("<- change board title"));
       toast.success(res.payload.message);
     } catch (error) {
       toast.error(error);
@@ -41,7 +41,6 @@ const Container: React.FC = () => {
     const id = e.active.id as string;
     const targetBoardId = e.over?.id as string;
     const currentBoardId = e.active.data.current?.currentBoardId;
-    console.log(":::::::::e", id, currentBoardId, targetBoardId);
     if (
       e.over === null ||
       targetBoardId === null ||

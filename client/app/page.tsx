@@ -7,7 +7,7 @@ export default function Home() {
 
   useEffect(() => {
     router.push("/sign-in");
-  }, []);
+  }, [router]);
   return (
     <div>
       <p>go to login page</p>
