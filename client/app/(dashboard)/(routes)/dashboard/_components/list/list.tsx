@@ -1,5 +1,8 @@
 "use client";
 import React, { useRef, useState } from "react";
+import { useDraggable } from "@dnd-kit/core";
+import { CSS } from "@dnd-kit/utilities";
+
 import Task from "../task/task";
 import { Button } from "@/components/ui/button";
 import { FaEdit } from "react-icons/fa";
@@ -12,17 +15,29 @@ import {
 import toast from "react-hot-toast";
 import { MdDeleteForever } from "react-icons/md";
 import { handleCreateTask } from "@/lib/features/taskSlice/slice";
+import { FaDiceSix } from "react-icons/fa6";
 
-const List = ({ lists, triggerGetBoardApi }) => {
+interface listProp {
+  lists: unknown;
+  triggerGetBoardApi: () => void;
+}
+
+const List: React.FC<listProp> = ({ lists, triggerGetBoardApi }) => {
   const [isEdit, setIsEdit] = useState(true);
   const inputRef = useRef<HTMLInputElement>(null);
   const dispatch = useAppDispatch();
   const { loading, error } = useAppSelector((state) => state.list);
-
   const [listTitle, setListTitle] = useState(lists.title);
-
+  const { attributes, listeners, setNodeRef, transform } = useDraggable({
+    id: lists._id,
+    data: lists.boardId,
+  });
   const showIcon = () => {
     setIsEdit(!isEdit);
+  };
+
+  const style = {
+    transform: CSS.Translate.toString(transform),
   };
 
   const updateList = async () => {
@@ -64,35 +79,47 @@ const List = ({ lists, triggerGetBoardApi }) => {
       toast.error(error || "Error while creating list");
     }
   };
-  const handleDragEnd = (e: DragEvent) => {
-    const { active, over } = e;
-    if (!over) return;
-    const id = active._id as string;
-    const newStatus = over._id as Task["status"];
-  };
+
   return (
     <>
-      <div className="cursor-grab rounded-[12] bg-neutral-800 p-4 shadow-sm hover:shadow-md">
+      <div
+        ref={setNodeRef}
+        style={style}
+        className=" rounded-[12] bg-neutral-800 p-4 shadow-sm hover:shadow-md"
+      >
+        <div className="flex justify-end mb-[6]">
+          <div {...listeners} {...attributes} className="cursor-grab">
+            <FaDiceSix color="white" />
+          </div>
+        </div>
         <div className="flex justify-between mb-4 font-bold text-neutral-100">
-          <span onClick={showIcon} className="p-0 m-0">
+          <div onClick={showIcon} className="p-0 m-0">
             {isEdit ? (
-              <Button>
-                <FaEdit />
-              </Button>
+              <div className=" cursor-pointer rounded">
+                <FaEdit size={20} color="white" />
+              </div>
             ) : (
-              <Button onClick={updateList}>
-                <BiSolidUpArrowSquare />
-              </Button>
+              <div onClick={updateList} className=" cursor-pointer rounded">
+                <BiSolidUpArrowSquare
+                  size={20}
+                  color={"rgb(234 114 8 / 81%)"}
+                />
+              </div>
             )}
-          </span>
+          </div>
           <div className="w-full ml-2">
             {" "}
             {isEdit ? (
-              `${listTitle}`
+              <input
+                placeholder={`${listTitle}`}
+                className="pl-[1] bg-neutral-800 rounded outline-none text-wrap "
+                type="text"
+                disabled={true}
+              />
             ) : (
               <input
                 ref={inputRef}
-                className="pl-[4] bg-neutral-500 rounded outline-none "
+                className="pl-[1] bg-neutral-500 rounded outline-none "
                 type="text"
                 value={listTitle}
                 onChange={(e) => setListTitle(e.target.value)}
@@ -101,9 +128,9 @@ const List = ({ lists, triggerGetBoardApi }) => {
             )}
           </div>
           <div>
-            <Button onClick={deleteList}>
-              <MdDeleteForever />
-            </Button>
+            <div className="cursor-pointer rounded" onClick={deleteList}>
+              <MdDeleteForever size={24} color="rgb(239 68 68)" />
+            </div>
           </div>
         </div>
         <div className="flex flex-1 flex-col gap-4">
@@ -115,7 +142,10 @@ const List = ({ lists, triggerGetBoardApi }) => {
             />
           ))}
           <Button
-            onClick={createTask}
+            onClick={(e) => {
+              e.stopPropagation();
+              createTask();
+            }}
             className="bg-white rounded-[4] hover:bg-green-300"
           >
             ADD TASK +

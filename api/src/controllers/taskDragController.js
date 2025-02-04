@@ -12,11 +12,11 @@ const taskDrag = async (req, res) => {
       return res.status(404).json({ message: "Task and List not found" });
     }
 
-    currentList.tasks.pull(task);
-    await currentList.save();
-
     targetList.tasks.push(task);
     await targetList.save();
+
+    currentList.tasks.pull(task);
+    await currentList.save();
 
     res.status(200).json({ message: "Task location updated" });
   } catch (error) {
@@ -24,4 +24,4 @@ const taskDrag = async (req, res) => {
   }
 };
 
-module.exports=taskDrag;
+module.exports = taskDrag;

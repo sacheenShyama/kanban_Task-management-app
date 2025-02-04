@@ -74,6 +74,36 @@ export const handleDeleteList = createAsyncThunk(
     }
   }
 );
+export const handleListDragDrop = createAsyncThunk(
+  "listDragDrop",
+  async (
+    {
+      id,
+      currentBoardId,
+      targetBoardId,
+    }: { id: string; currentBoardId: string; targetBoardId: string },
+    { rejectWithValue }
+  ) => {
+    try {
+      const token = useLocalStorage("kanbanToken").getItem();
+      if (!token || undefined) throw new Error("Token not found");
+
+      const res = await axios.post(
+        `${baseURL}/drag`,
+        {
+          id,
+          currentBoardId,
+          targetBoardId,
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      return res;
+    } catch (error) {
+      return rejectWithValue(error || "Failed to create list");
+    }
+  }
+);
 
 const listSlice = createSlice({
   name: "list",
@@ -116,6 +146,18 @@ const listSlice = createSlice({
         // state.list = state.list.filter((b: any) => b._id !== action.payload);
       })
       .addCase(handleDeleteList.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      .addCase(handleListDragDrop.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(handleListDragDrop.fulfilled, (state, action) => {
+        state.loading = false;
+        // state.message = action.payload.data;
+      })
+      .addCase(handleListDragDrop.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       });

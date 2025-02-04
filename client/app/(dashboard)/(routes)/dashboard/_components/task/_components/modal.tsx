@@ -58,9 +58,9 @@ const Modal = ({ task, triggerGetBoardApi }) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="text-white">
-          <FaEdit />
-        </Button>
+        <div className=" cursor-pointer rounded">
+          <FaEdit size={19} color="white" />
+        </div>
       </DialogTrigger>
       <DialogContent className="sm:max-w-max bg-neutral-950 border-none">
         <DialogHeader>

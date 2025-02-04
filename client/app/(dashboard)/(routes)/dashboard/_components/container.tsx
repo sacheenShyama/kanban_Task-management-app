@@ -1,5 +1,7 @@
 "use client";
-import React, { Fragment, useCallback, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
+import { DndContext, DragEndEvent } from "@dnd-kit/core";
+
 import Navbar from "./navbar";
 import Board from "./board/board";
 import { useRouter } from "next/navigation";
@@ -10,7 +12,12 @@ import {
 } from "@/lib/features/boardSlice/slice";
 import { Button } from "@/components/ui/button";
 import ProgressBar from "@/components/progressBar";
+import { FaPlus } from "react-icons/fa6";
+
 import toast from "react-hot-toast";
+import axios from "axios";
+import { handleListDragDrop } from "@/lib/features/listSlice/slice";
+import { totalmem } from "os";
 const Container = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -26,7 +33,7 @@ const Container = () => {
 
   useEffect(() => {
     dispatch(handleGetBoard());
-  }, [dispatch, router, trigger]);
+  }, [dispatch, trigger]);
 
   const createBoard = async () => {
     try {
@@ -36,33 +43,49 @@ const Container = () => {
       toast.error(error);
     }
   };
+  const dragEnd = async (e: DragEndEvent) => {
+    const id = e.active.id as string;
+    const targetBoardId = e.over?.id as string;
+    const currentBoardId = e.active.data.current;
+    try {
+      await dispatch(
+        handleListDragDrop({ id, targetBoardId, currentBoardId })
+      ).unwrap();
+      toast.success("List moved successfully");
+      triggerGetBoardApi();
+    } catch (error) {
+      toast.error(error);
+    }
+  };
   return (
-    <Fragment>
+    <div className="overflow-y-auto">
       {loading && <ProgressBar />}
-      <div style={{ width: "100%", height: "100%" }}>
-        <Navbar />
-        <div className=" flex justify-end py-2">
+      <div className="">
+        <div className="container flex justify-end mt-6">
           <Button
             onClick={createBoard}
             className="bg-white  text-black rounded-[8] hover:bg-gray-400 "
           >
-            ADD BOARD +
+            ADD BOARD <FaPlus />
           </Button>
         </div>
-        <div className="p-4">
+
+        <div className="p-3 mt-6">
           <div className="flex flex-wrap gap-8 justify-center">
-            {board &&
-              board.map((column: any) => (
-                <Board
-                  column={column}
-                  key={column._id}
-                  triggerGetBoardApi={triggerGetBoardApi}
-                />
-              ))}
+            <DndContext onDragEnd={dragEnd}>
+              {board &&
+                board.map((column: any) => (
+                  <Board
+                    column={column}
+                    key={column._id}
+                    triggerGetBoardApi={triggerGetBoardApi}
+                  />
+                ))}
+            </DndContext>
           </div>
         </div>
       </div>
-    </Fragment>
+    </div>
   );
 };
 

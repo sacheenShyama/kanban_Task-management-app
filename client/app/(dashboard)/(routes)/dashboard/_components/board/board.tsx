@@ -1,6 +1,8 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import React, { Fragment, useEffect, useRef, useState } from "react";
+import { useDroppable } from "@dnd-kit/core";
+
 import List from "../list/list";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import {
@@ -22,7 +24,9 @@ const Board = ({ column, triggerGetBoardApi }) => {
   const dispatch = useAppDispatch();
   const inputRef = useRef<HTMLInputElement>(null);
   const { loading, error } = useAppSelector((state) => state.board);
+  const { isOver, setNodeRef } = useDroppable({ id: column._id });
 
+  // useEffect(() => {}, [isOver]);
   const showIcon = () => {
     setIsEdit(!isEdit);
   };
@@ -57,28 +61,36 @@ const Board = ({ column, triggerGetBoardApi }) => {
       toast.success("List created successfully");
       triggerGetBoardApi();
     } catch (error) {
-      toast.error("Error while creating list");
+      toast.error(error || "Error while creating list");
     }
   };
+
   return (
-    <div className="flex w-80 flex-col rounded-[12] bg-neutral-900 p-4">
+    <div
+      ref={setNodeRef}
+      className="flex w-80 flex-col rounded-[12] bg-neutral-900 p-4"
+    >
       {/* {true && <Loading />} */}
       <div className="flex justify-between mb-4 font-bold text-neutral-100">
-        <span onClick={showIcon} className="p-0 m-0">
+        <div onClick={showIcon} className="p-0 m-0">
           {isEdit ? (
-            <Button>
-              <FaEdit />
-            </Button>
+            <div className=" cursor-pointer rounded">
+              <FaEdit size={25} color="white" />
+            </div>
           ) : (
-            <Button onClick={updateBoard}>
-              <BiSolidUpArrowSquare />
-            </Button>
+            <div onClick={updateBoard} className=" cursor-pointer rounded">
+              <BiSolidUpArrowSquare size={25} color={"rgb(234 114 8 / 81%)"} />
+            </div>
           )}
-        </span>
+        </div>
         <div className="w-full ml-2">
-          {" "}
           {isEdit ? (
-            `${boardTitle}`
+            <input
+              placeholder={`${boardTitle}`}
+              className="pl-[4] bg-neutral-900 rounded outline-none text-wrap "
+              type="text"
+              disabled={true}
+            />
           ) : (
             <input
               ref={inputRef}
@@ -91,9 +103,9 @@ const Board = ({ column, triggerGetBoardApi }) => {
           )}
         </div>
         <div>
-          <span onClick={deleteBoard}>
-            <MdDeleteForever />
-          </span>
+          <div className="cursor-pointer rounded" onClick={deleteBoard}>
+            <MdDeleteForever size={25} color="rgb(239 68 68)" />
+          </div>
         </div>
       </div>
       <div className="flex flex-1 flex-col gap-4">

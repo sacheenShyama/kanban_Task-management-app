@@ -40,7 +40,7 @@ const SignupFormUi = () => {
       {loading && <ProgressBar />}
       <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
         <div>
-          <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+          <label className="block mb-2 text-sm font-medium text-white">
             Your email
           </label>
           <input
@@ -49,13 +49,13 @@ const SignupFormUi = () => {
             value={formData.email}
             id="email"
             onChange={handleChange}
-            className="bg-gray-50 border-2 outline-none border-gray-300 focus:border-blue-400 rounded w-full p-2"
+            className="w-full p-2 text-white outline-none border-none rounded-[4] bg-neutral-700"
             placeholder="name@company.com"
           />
         </div>
 
         <div>
-          <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+          <label className="block mb-2 text-sm font-medium text-white">
             Name
           </label>
           <input
@@ -64,13 +64,13 @@ const SignupFormUi = () => {
             value={formData.name}
             onChange={handleChange}
             id="name"
-            className="bg-gray-50 border-2 outline-none border-gray-300 focus:border-blue-400 rounded w-full p-2"
+            className="w-full p-2 text-white outline-none border-none rounded-[4] bg-neutral-700"
             placeholder="name"
           />
         </div>
 
         <div>
-          <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+          <label className="block mb-2 text-sm font-medium text-white">
             Password
           </label>
           <input
@@ -80,7 +80,7 @@ const SignupFormUi = () => {
             value={formData.password}
             onChange={handleChange}
             placeholder="••••••••"
-            className="bg-gray-50 border-2 outline-none border-gray-300 focus:border-blue-400 rounded w-full p-2"
+            className="w-full p-2 text-white outline-none border-none rounded-[4] bg-neutral-700"
           />
         </div>
         <Button
