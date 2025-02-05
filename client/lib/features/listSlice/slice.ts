@@ -3,7 +3,6 @@ import { listInterface } from "@/interface/interface";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 const baseURL = "https://kanban-task-management-app-jl0u.onrender.com/api/list";
-
 interface listState {
   list: listInterface[];
   loading: boolean;

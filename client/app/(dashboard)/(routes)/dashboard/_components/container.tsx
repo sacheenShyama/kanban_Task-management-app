@@ -41,6 +41,7 @@ const Container: React.FC = () => {
     const id = e.active.id as string;
     const targetBoardId = e.over?.id as string;
     const currentBoardId = e.active.data.current?.currentBoardId;
+
     if (
       e.over === null ||
       targetBoardId === null ||

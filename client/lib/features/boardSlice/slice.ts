@@ -2,7 +2,8 @@ import { useLocalStorage } from "@/hooks/useLocalStorage";
 import { boardInterface } from "@/interface/interface";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-const baseURL = "https://kanban-task-management-app-jl0u.onrender.com/api/board";
+const baseURL =
+  "https://kanban-task-management-app-jl0u.onrender.com/api/board";
 interface boardState {
   board: boardInterface[];
   loading: boolean;
