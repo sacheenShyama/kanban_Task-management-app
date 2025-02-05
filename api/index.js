@@ -10,7 +10,9 @@ mongoose
   .connect(MONGO_URL)
   .then(() => {
     const server = http.createServer(app);
-    server.listen();
+    server.listen(PORT, () => {
+      `server started${PORT}`;
+    });
   })
   .catch((err) => {
     console.error("Failed to connect to MongoDB", err);
