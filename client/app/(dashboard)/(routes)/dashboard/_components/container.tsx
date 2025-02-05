@@ -31,7 +31,7 @@ const Container: React.FC = () => {
 
   const createBoard = async () => {
     try {
-      const res = await dispatch(handleCreateBoard("<- change board title"));
+      const res = await dispatch(handleCreateBoard("Board title"));
       toast.success(res.payload.message);
     } catch (error) {
       toast.error(error);

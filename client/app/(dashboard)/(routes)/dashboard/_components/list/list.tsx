@@ -67,7 +67,7 @@ const List: React.FC<listProp> = ({ lists, triggerGetBoardApi }) => {
     try {
       await dispatch(
         handleCreateTask({
-          title: "<- change task title",
+          title: "Task title",
           description: "default description HIRE ME | HIRE ME ",
           dueDate: new Date().toISOString(),
           priority: "Low",

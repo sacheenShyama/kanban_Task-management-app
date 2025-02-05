@@ -57,7 +57,7 @@ const Board: React.FC<boardProps> = ({ column, triggerGetBoardApi }) => {
   const createList = async () => {
     try {
       await dispatch(
-        handleCreateList({ boardId: column._id, title: "<- change list title" })
+        handleCreateList({ boardId: column._id, title: "list title" })
       );
       toast.success("List created successfully");
       triggerGetBoardApi();

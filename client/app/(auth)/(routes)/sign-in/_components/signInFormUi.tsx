@@ -25,8 +25,8 @@ const SignInFormUi = () => {
     e.preventDefault();
     try {
       await dispatch(handleLogin(formData)).unwrap();
-      router.push("/dashboard");
       setFormData({ email: "", password: "" });
+      router.push("/dashboard");
     } catch (error) {
       toast.error(error);
     }
