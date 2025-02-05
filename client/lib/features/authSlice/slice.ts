@@ -2,8 +2,7 @@ import { useLocalStorage } from "@/hooks/useLocalStorage";
 import { userInterface } from "@/interface/interface";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-const baseURL = "http://localhost:8000";
-
+const baseURL = "https://kanban-task-management-app-jl0u.onrender.com";
 interface authState {
   user: userInterface;
   loading: boolean;

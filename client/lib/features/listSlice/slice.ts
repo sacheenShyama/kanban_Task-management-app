@@ -2,8 +2,7 @@ import { useLocalStorage } from "@/hooks/useLocalStorage";
 import { listInterface } from "@/interface/interface";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-const baseURL = "http://localhost:8000/api/list";
-
+const baseURL = "https://kanban-task-management-app-jl0u.onrender.com/api/list";
 interface listState {
   list: listInterface[];
   loading: boolean;
