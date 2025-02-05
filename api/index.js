@@ -11,7 +11,7 @@ mongoose
   .then(() => {
     const server = http.createServer(app);
     server.listen(PORT, () => {
-      `server started${PORT}`;
+      console.log(`server started${PORT}`);
     });
   })
   .catch((err) => {
